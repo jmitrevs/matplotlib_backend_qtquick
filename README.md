@@ -1,5 +1,5 @@
 # matplotlib_backend_qtquick
-This package implements a QtQuick backend for matplotlib. It started from maplotlib_qtquick_playground, written by Frédéric Collonval, but it has been updated to work with the current version (3.2.1) of matplotlib.
+This package implements a QtQuick backend for matplotlib. It started from [maplotlib_qtquick_playground](https://github.com/fcollonval/matplotlib_qtquick_playground), written by Frédéric Collonval, but it has been updated to work with the current version (3.2.1) of matplotlib.
 
 ## Usage
 
