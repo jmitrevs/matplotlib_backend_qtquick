@@ -11,6 +11,8 @@ The selection logic is as follows:
 - otherwise, use whatever the rcParams indicate.
 
 Support for PyQt4 is deprecated.
+
+(Copied and updated from matplotlib)
 """
 
 from distutils.version import LooseVersion
@@ -66,11 +68,11 @@ else:
 
 
 def _setup_pyqt5():
-    global QtCore, QtGui, QtWidgets, QtQuick, __version__, is_pyqt5, \
+    global QtCore, QtGui, QtWidgets, QtQuick, QtQml, __version__, is_pyqt5, \
         _isdeleted, _devicePixelRatio, _setDevicePixelRatio, _getSaveFileName
 
     if QT_API == QT_API_PYQT5:
-        from PyQt5 import QtCore, QtGui, QtWidgets, QtQuick
+        from PyQt5 import QtCore, QtGui, QtWidgets, QtQuick, QtQml
         import sip
         __version__ = QtCore.PYQT_VERSION_STR
         QtCore.Signal = QtCore.pyqtSignal
@@ -78,7 +80,7 @@ def _setup_pyqt5():
         QtCore.Property = QtCore.pyqtProperty
         _isdeleted = sip.isdeleted
     elif QT_API == QT_API_PYSIDE2:
-        from PySide2 import QtCore, QtGui, QtWidgets, QtQuick, __version__
+        from PySide2 import QtCore, QtGui, QtWidgets, QtQuick, QtQml, __version__
         import shiboken2
         def _isdeleted(obj): return not shiboken2.isValid(obj)
     else:
