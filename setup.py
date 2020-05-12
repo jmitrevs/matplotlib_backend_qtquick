@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="matplotlib_backend_qtquick",
-    version="0.0.4",
+    version="0.0.5",
     author="Jovan Mitrevski",
     author_email="j.p.mitrevski@gmail.com",
     description="A QtQuick backend for matplotlib",

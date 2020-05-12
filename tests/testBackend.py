@@ -15,7 +15,6 @@ from matplotlib_backend_qtquick.qt_compat import QtGui, QtQml, QtCore
 class DisplayBridge(QtCore.QObject):
     """ A bridge class to interact with the plot in python
     """
-    stateChanged = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -38,7 +37,7 @@ class DisplayBridge(QtCore.QObject):
         y = np.sin(x)
 
         self.axes.plot(x, y)
-        self.stateChanged.emit()
+        canvas.draw_idle()
 
 
 class TestBackend(unittest.TestCase):
