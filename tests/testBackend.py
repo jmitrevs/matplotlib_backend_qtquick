@@ -1,7 +1,7 @@
 """
 An integration test to create a plot using the qtquick backend.
 """
-
+import sys
 from pathlib import Path
 import unittest
 import numpy as np
@@ -46,7 +46,7 @@ class TestBackend(unittest.TestCase):
 
     def test_basicPlotting(self):
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-        app = QtGui.QGuiApplication()
+        app = QtGui.QGuiApplication(sys.argv)
         engine = QtQml.QQmlApplicationEngine()
 
         # instantate the display bridge

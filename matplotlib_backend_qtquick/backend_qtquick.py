@@ -11,7 +11,8 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5 import (
     TimerQT, SPECIAL_KEYS, MODIFIER_KEYS, cursord)
 from .qt_compat import (
-    QtCore, QtGui, QtQuick, QtWidgets)
+    QtCore, QtGui, QtQuick, QtWidgets,
+    QT_API, QT_API_PYSIDE2)
 
 
 class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
@@ -70,6 +71,9 @@ class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
     # property exposed to Qt
     def get_dpi_ratio(self):
         return self._dpi_ratio
+
+    def boundingRect(self):
+        return QtCore.QRectF(0, 0, self.width(), self.height())
 
     def set_dpi_ratio(self, new_ratio):
         # As described in __init__ above, we need to be careful in cases with
@@ -344,8 +348,12 @@ class NavigationToolbar2QtQuick(QtCore.QObject, NavigationToolbar2):
 
     def __init__(self, canvas, parent=None):
 
-        QtCore.QObject.__init__(self, parent)
-        NavigationToolbar2.__init__(self, canvas)
+        # I think this is needed due to a bug in PySide2
+        if QT_API == QT_API_PYSIDE2:
+            QtCore.QObject.__init__(self, parent)
+            NavigationToolbar2.__init__(self, canvas)
+        else:
+            super().__init__(canvas=canvas, parent=parent)
 
         self._message = ""
 
