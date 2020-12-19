@@ -483,14 +483,6 @@ class NavigationToolbar2QtQuick(QtCore.QObject, NavigationToolbar2):
                 loc.refresh()
         self.canvas.draw_idle()
 
-    def press(self, event):
-        """Called whenever a mouse button is pressed."""
-        pass
-
-    def release(self, event):
-        """this will be called whenever mouse button is released"""
-        pass
-
     def draw_rubberband(self, event, x0, y0, x1, y1):
         """Draw a rectangle rubberband to indicate zoom limits"""
         height = self.canvas.figure.bbox.height
