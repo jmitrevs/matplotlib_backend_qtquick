@@ -12,7 +12,7 @@ from matplotlib.backends.backend_qt import (
     TimerQT, SPECIAL_KEYS, _MODIFIER_KEYS as MODIFIER_KEYS, cursord)
 from .qt_compat import (
     QtCore, QtGui, QtQuick, QtWidgets,
-    QT_API, QT_API_PYSIDE2)
+    QT_API, QT_API_PYSIDE2, QT_API_PYSIDE6)
 
 
 class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
@@ -25,7 +25,7 @@ class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
 
     # map Qt button codes to MouseEvent's ones:
     buttond = {QtCore.Qt.LeftButton: MouseButton.LEFT,
-               QtCore.Qt.MidButton: MouseButton.MIDDLE,
+               QtCore.Qt.MiddleButton: MouseButton.MIDDLE,
                QtCore.Qt.RightButton: MouseButton.RIGHT,
                QtCore.Qt.XButton1: MouseButton.BACK,
                QtCore.Qt.XButton2: MouseButton.FORWARD,
@@ -154,7 +154,7 @@ class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
                 # Uncaught exceptions are fatal for PyQt5, so catch them.
                 traceback.print_exc()
 
-    def geometryChanged(self, new_geometry, old_geometry):
+    def geometryChangeHelper(self, new_geometry, old_geometry):
         w = new_geometry.width() * self.dpi_ratio
         h = new_geometry.height() * self.dpi_ratio
 
@@ -167,6 +167,17 @@ class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
         self.figure.set_size_inches(winch, hinch, forward=False)
         FigureCanvasBase.resize_event(self)
         self.draw_idle()
+
+    # Overload for Qt 6
+    def geometryChange(self, new_geometry, old_geometry):
+        self.geometryChangeHelper(new_geometry, old_geometry)
+        QtQuick.QQuickPaintedItem.geometryChange(self,
+                                                 new_geometry,
+                                                 old_geometry)
+
+    # Overload for Qt 5
+    def geometryChanged(self, new_geometry, old_geometry):
+        self.geometryChangeHelper(new_geometry, old_geometry)
         QtQuick.QQuickPaintedItem.geometryChanged(self,
                                                   new_geometry,
                                                   old_geometry)
@@ -239,7 +250,7 @@ class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
                                                 guiEvent=event)
 
     def wheelEvent(self, event):
-        x, y = self.mouseEventCoords(event.pos())
+        x, y = self.mouseEventCoords(event.position())
         # from QWheelEvent::delta doc
         if event.pixelDelta().x() == 0 and event.pixelDelta().y() == 0:
             steps = event.angleDelta().y() / 120
@@ -349,7 +360,7 @@ class NavigationToolbar2QtQuick(QtCore.QObject, NavigationToolbar2):
     def __init__(self, canvas, parent=None):
 
         # I think this is needed due to a bug in PySide2
-        if QT_API == QT_API_PYSIDE2:
+        if QT_API in [QT_API_PYSIDE2, QT_API_PYSIDE6]:
             QtCore.QObject.__init__(self, parent)
             NavigationToolbar2.__init__(self, canvas)
         else:
