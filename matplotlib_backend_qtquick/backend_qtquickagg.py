@@ -46,8 +46,8 @@ class FigureCanvasQtQuickAgg(FigureCanvasAgg, FigureCanvasQtQuick):
                 stringBuffer = self.renderer.tostring_argb()
 
             # convert the Agg rendered image -> qImage
-            qImage = QtGui.QImage(stringBuffer, self.renderer.width,
-                                  self.renderer.height,
+            qImage = QtGui.QImage(stringBuffer, int(self.renderer.width),
+                                  int(self.renderer.height),
                                   QtGui.QImage.Format_RGBA8888)
             if hasattr(qImage, 'setDevicePixelRatio'):
                 # Not available on Qt4 or some older Qt5.
