@@ -8,8 +8,8 @@ from matplotlib.backend_bases import (
     FigureCanvasBase, NavigationToolbar2,
     MouseButton)
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5 import (
-    TimerQT, SPECIAL_KEYS, MODIFIER_KEYS, cursord)
+from matplotlib.backends.backend_qt import (
+    TimerQT, SPECIAL_KEYS, _MODIFIER_KEYS as MODIFIER_KEYS, cursord)
 from .qt_compat import (
     QtCore, QtGui, QtQuick, QtWidgets,
     QT_API, QT_API_PYSIDE2)
